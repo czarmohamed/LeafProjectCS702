@@ -47,6 +47,17 @@ plt.subplot(121), plt.imshow(img), plt.axis('off'), plt.title('Original', size=2
 plt.subplot(122), plt.imshow(idctimg), plt.axis('off'), plt.title('Reconstructed', size=20)
 plt.show()
 # ------------------------------------------------------------------
+# Morph
+kernel = np.ones((2,2),np.uint8)
+opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+kernel = np.ones((6,6),np.uint8)
+blackhat = cv2.morphologyEx(img, cv2.MORPH_BLACKHAT, kernel)
+
+cv2.imshow("Opening", opening)
+cv2.waitKey(0)
+cv2.imshow("BlackHat", blackhat)
+cv2.waitKey(0)
+# ------------------------------------------------------------------
 # Blur Filters
 
 median = cv2.medianBlur(img,ksize=3)
@@ -72,8 +83,6 @@ cv2.imshow("Threshold Image", thresh)
 
 
 cv2.waitKey(0)
-
-# ------------------------------------------------------------------
 
 # ------------------------------------------------------------------
 
@@ -150,8 +159,9 @@ for i in range(len(imgarray)):
     logHuMomentData.append(logTransform)
 
 # Print every feature vector in the dataset
-print("List of feature vectors for the Dataset: ")
+print("List of feature vectors for every image in the Dataset: ")
 for i in range(len(logHuMomentData)):
+    print("Feature Vector for Image:",i+1)
     print(logFeatureData[i])
     print(",")
     print(logHuMomentData[i])
@@ -193,8 +203,7 @@ for i in range(1, 45):
     predict = knn.predict(xtest)
     error.append(np.mean(predict != ytest))
 plt.figure(figsize=(12, 6))
-plt.plot(range(1, 45), error, color='red', linestyle='dashed', marker='o',
-         markerfacecolor='blue', markersize=10)
+plt.plot(range(1, 45), error, color='red', linestyle='dashed', marker='o', markerfacecolor='blue', markersize=10)
 plt.title('Error Rate K Value')
 plt.xlabel('K Value')
 plt.ylabel('Mean Error')
